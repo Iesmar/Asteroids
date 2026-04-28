@@ -24,31 +24,37 @@ def main():
     Shots.containers = (updatable, drawable, shots)
     AsteroidField.containers = (updatable)
 
-    asteroid_field = AsteroidField()
-    player = Player(SCREEN_WIDTH /2, SCREEN_HEIGHT / 2)
+    asteroid_field = AsteroidField() # creating the astroid field.
+    player = Player(SCREEN_WIDTH /2, SCREEN_HEIGHT / 2) # creating the player in the middle of the screen.
     
 
     while True:
         log_state()
             
-
-        for event in pygame.event.get():
+        for event in pygame.event.get(): # handling events, such as quitting the game.
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
         
-        screen.fill(("black"))
+        screen.fill(("black")) # make screen black
         
-        for draw in drawable:
+        for draw in drawable:   # drawing all drawable objects.
             draw.draw(screen)
 
-        updatable.update(dt)
+        updatable.update(dt)    # updating all updatable objects.
 
-        for asteroid in asteroids:
+        for asteroid in asteroids: # checking for collision between player and asteroids.
             if player.collides_with(asteroid):
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
+
+        for asteroid in asteroids: # checking for collision between shots and asteroids.
+            for shot in shots:
+                if shot.collides_with(asteroid):
+                    log_event("asteroid_shot")
+                    asteroid.split()
+                    shot.kill()
 
         pygame.display.flip()
 
