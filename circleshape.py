@@ -1,3 +1,5 @@
+from turtle import distance
+
 import pygame
 
 # Base class for game objects
@@ -10,7 +12,7 @@ class CircleShape(pygame.sprite.Sprite):
             super().__init__()
 
         self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, 0)
+        self.velocity = pygame.Vector2(0, 0) # HERE IS THE VELOCITY!!!!!!!
         self.radius = radius
 
     def draw(self, screen):
@@ -20,3 +22,8 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt):
         # must override
         pass
+
+    def collides_with(self, other):
+        distance = pygame.Vector2.distance_to(self.position, other.position)
+        return distance <= (self.radius + other.radius)
+        
